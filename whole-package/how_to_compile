@@ -1,0 +1,5 @@
+icc -c matrixUtils.cpp
+icc -c genoVector.cpp
+icc -lz -mkl main.cpp genoVector.o matrixUtils.o
+
+icc -I/*boost_path*/include -L/*boost_paty*/lib -lboost_iostreams -lz -mkl -std=c++11 main_gz_loop_multhread.cpp genoVector.o matrixUtils.o
