@@ -1,0 +1,2 @@
+icc -c smallmatlib.cpp
+icc -mkl smallmatlab.cpp smallmatlib.o
