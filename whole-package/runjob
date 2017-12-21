@@ -1,0 +1,9 @@
+#!/bin/bash
+#SBATCH -p development     # queue (partition) -- normal, development, etc.
+#SBATCH -N 1               # number of nodes requested
+#SBATCH -n 1             # number of cores(tasks) per node, set as 1 for local parallelism (opemMP or threads)
+#SBATCH -t 02:00:00        # run time (hh:mm:ss) - 1.5 hours
+
+export OMP_NUM_THREADS=1   # number of threads per core or task. You can set as many as you want, but parallelism depends on your problem.
+
+ibrun ./a.out
