@@ -1,1 +1,1 @@
-# large-scale-GWAS
+# large-scale genome-wide association study
