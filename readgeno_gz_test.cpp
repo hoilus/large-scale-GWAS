@@ -19,7 +19,7 @@ int main()
   char * cp;
   char delimi[] = ",";
   // process header line: store names of columns
-  std::string file = "/work/04320/hanchen/lonestar/RV-GMMAT-pilot/data/simulation/geno.csv.gz";
+  std::string file = "/geno.csv.gz";
   if ((int) file.length() > 3 && file.substr(file.length()-3) == ".gz") {
     std::ifstream fin (file.c_str(), ios_base::in | ios_base::binary);
       if (!fin) {
