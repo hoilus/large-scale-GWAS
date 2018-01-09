@@ -1,0 +1,66 @@
+CPPC    = g++
+LIBS    = -L/work/03461/lh26/lonestar/R-patched/src/nmath/standalone -L/work/03461/lh26/lonestar/lapack-3.8.0 -lRmath -llapack -lrefblas -lgfortran -lz -lm
+#STATLIBS = -static -lRmath -llapack -lblas -lgfortran -lg2c -lz -lm
+STATLIBS = -static -lRmath -llapack -lblas -lgfortran -lz -lm
+# may need to add/remove -lgfortran and/or -lg2c depending on your system
+
+XERBLAFIX = -Xlinker -z -Xlinker muldefs
+# it seems that xerbla has multiple conflicting definitions in Debian
+# lapack/blas.  since this is the error handler for invalid function
+# input arguments, we assume that this is okay and will not cause any
+# numerical errors in our calculations
+
+# warning options
+WOPTS   = -ansi -pedantic -Werror -Wall -W -Wconversion -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings -Wno-deprecated -fshort-enums -fno-common -Dinline=
+# options recommended by GSL documentation but not used are:
+# -Wshadow, seems to cause problems with gcc version 2
+# -Wtraditional -Wnested-externs, not valid for c++
+
+# optimisation
+OOPTS   = -O3
+
+# debugging and profiling options
+# DOPTS = -pg
+
+all:    quicktest
+
+gzstream.o:     gzstream.cpp
+        $(CPPC) $(OOPTS) $(DOPTS) -c gzstream.cpp
+        @echo done.
+
+snphwe.o:       snphwe.cpp
+        $(CPPC) $(OOPTS) $(DOPTS) -c snphwe.cpp
+        @echo done.
+
+stats.o:        stats.h stats.cpp
+        $(CPPC) $(OOPTS) $(DOPTS) -I /opt/apps/intel16/cray_mpich_7_3/Rstats/3.4.0/lib64/R/include -c stats.cpp
+        @echo done.
+
+as.o:   as.cpp
+        $(CPPC) $(OOPTS) $(DOPTS) -I /opt/apps/intel16/cray_mpich_7_3/Rstats/3.4.0/lib64/R/include -c as.cpp
+        @echo done.
+
+quicktest.o:    quicktest.h stats.h quicktest.cpp
+        $(CPPC) $(WOPTS) $(OOPTS) $(DOPTS) -I /opt/apps/intel16/cray_mpich_7_3/Rstats/3.4.0/lib64/R/include -c quicktest.cpp
+        @echo done.
+
+quicktest:      gzstream.o snphwe.o quicktest.o as.o stats.o
+        $(CPPC) $(DOPTS) gzstream.o snphwe.o as.o quicktest.o stats.o $(LIBS) -o quicktest
+        @echo done.
+
+static: gzstream.o snphwe.o quicktest.o as.o stats.o
+        $(CPPC) $(XERBLAFIX) gzstream.o snphwe.o as.o quicktest.o stats.o $(STATLIBS) -o quicktest-static
+        @echo done.
+clean:
+        rm -f *.o *.tmp *.aux *.log *.toc
+
+doc:    quicktest.pod
+        pod2man -c "Quick association testing, with genotype uncertainty" -r "Version 0.95" quicktest.pod >quicktest.1
+        groff -man -Tps quicktest.1 | ps2pdf - quicktest.pdf
+        pod2html --noindex --title="Quick association testing, with genotype uncertainty" quicktest.pod >quicktest.html
+        pdflatex quicktest-guide; pdflatex quicktest-guide
+        @echo done.
+
+tar:    Makefile quicktest.cpp quicktest.pod
+        tar cjf quicktest.tar.bz2 Makefile quicktest.h quicktest.cpp gzstream.h gzstream.cpp as.h as.cpp stats.h stats.cpp quicktest.pod ex.gen.gz ex.sample ex-run.sh
+        @echo done.
