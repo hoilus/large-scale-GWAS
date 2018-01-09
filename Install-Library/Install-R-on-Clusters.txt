@@ -9,6 +9,8 @@ Firstly install them except R following the three steps:
 2. make
 3. make install
 
+export CPATH and LD_LIBRARY_PATH.
+
 Install R by commands:
 1. ./configure CPPFLAGS="-I/work/03461/lh26/lonestar/bzip2-1.0.6/include -I/work/03461/lh26/lonestar/xz-5.2.2/usr/local/include -I/work/03461/lh26/lonestar/pcre-8.39 -I/work/03461/lh26/lonestar/curl-7.57.0/include" LDFLAGS="-L/work/03461/lh26/lonestar/bzip2-1.0.6/lib -L/work/03461/lh26/lonestar/xz-5.2.2/usr/local/lib -L/work/03461/lh26/lonestar/pcre-8.39 -L/work/03461/lh26/lonestar/curl-7.57.0/lib" prefix=/work/03461/lh26/lonestar/R-patched
 2. make
