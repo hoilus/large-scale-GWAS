@@ -1,7 +1,9 @@
 Take TACC as a example. I want to install R packages on TACC is because I want to use standalone Rmath library.
 
-Here is the link which gives detailed installation guidance:
+Here are the links which can provide detailed installation guidance:
 https://unix.stackexchange.com/questions/343452/how-to-install-r-3-3-1-in-my-own-directory
+https://www.stat.berkeley.edu/classes/s243/rmath.html
+https://cran.r-project.org/doc/manuals/r-release/R-admin.html#The-standalone-Rmath-library
 
 Download tar files of R, zlib, bzip2, xz, pcre and curl.
 
